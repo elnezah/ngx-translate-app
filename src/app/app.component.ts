@@ -16,35 +16,15 @@ export class AppComponent implements OnInit {
   private static readonly TAG = 'AppComponent';
 
   public hasBaseDropZoneOver: boolean;
-  public fileUploader = new FileUploader({ });
+  public fileUploader = new FileUploader({});
 
-  public files: TranslationFile[];
+  public translationFiles: TranslationFile[] = [];
 
-  constructor(private fileReader: FileReader) {
+  public constructor() {
   }
 
   public ngOnInit(): void {
-    this.fileReader.onload = (ev: any) => {
-      try {
-        const mObject = JSON.parse(ev.target.result);
-        console.log(AppComponent.TAG, mObject);
-      } catch (e) {
-        console.warn(AppComponent.TAG, 'error trying to read file', e);
-      }
-    };
-
-    this.fileUploader.onAfterAddingFile = (fi: FileItem) => {
-      console.log(AppComponent.TAG, {fi});
-
-      const fn = fi.file.name;
-      const regexRes = /^([a-zA-Z]{2})\.(json)$/.exec(fn);
-
-      if (regexRes && regexRes.length > 0) {
-        const fileName = regexRes[1];
-        const extension = regexRes[2];
-        this.fileReader.readAsText(fi._file);
-      }
-    };
+    this.fileUploader.onAfterAddingFile = (fi: FileItem) => this.afterAddingFiles(fi);
   }
 
   // region Listeners
@@ -56,5 +36,54 @@ export class AppComponent implements OnInit {
     console.log(AppComponent.TAG, {$event});
   }
 
+  private async afterAddingFiles(fi: FileItem): Promise<void> {
+    const fn = fi.file.name;
+    const regexRes = /^([a-zA-Z]{2})\.(json)$/.exec(fn);
+
+    if (regexRes && regexRes.length > 0) {
+      const fileName = regexRes[1];
+      const fileExtension = regexRes[2];
+
+      if (fileExtension === 'json') {
+        const content = await this.readFileAsText(fi._file);
+        if (this.translationFiles && this.translationFiles.some(t => t.languageCode === fileName)) {
+          if (confirm('There is already content for this language. Do you want to overwrite current content for "' + fileName + '"?')) {
+            this.loadLanguage({
+              fileName: fileName + '.' + fileExtension,
+              languageCode: fileName,
+              content: JSON.parse(content)
+            });
+          } else {
+            alert('Your file was NOT loaded');
+          }
+        } else {
+          this.loadLanguage({
+            fileName: fileName + '.' + fileExtension,
+            languageCode: fileName,
+            content: JSON.parse(content)
+          });
+        }
+
+      }
+    }
+  }
   // endregion
+
+  private readFileAsText(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const fr = new FileReader();
+      fr.onload = () => resolve(fr.result as string);
+      fr.onerror = reject;
+      fr.readAsText(file);
+    });
+  }
+
+  private loadLanguage(translationFile: TranslationFile) {
+    const mIndex = this.translationFiles.findIndex(e => e.languageCode === translationFile.languageCode);
+    if (mIndex >= 0) {
+      this.translationFiles[mIndex] = translationFile;
+    } else {
+      this.translationFiles.push(translationFile);
+    }
+  }
 }

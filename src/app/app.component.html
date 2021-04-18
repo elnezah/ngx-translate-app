@@ -6,3 +6,8 @@
      class="well my-drop-zone">
   Base drop zone
 </div>
+
+<div *ngFor="let translationFile of translationFiles">
+  <div>Code: {{translationFile.languageCode}}</div>
+  <div style="font-size: xx-small; max-height: 40px; overflow: hidden">{{translationFile.content | json}}</div>
+</div>
