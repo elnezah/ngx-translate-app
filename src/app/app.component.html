@@ -22,6 +22,7 @@
 
   <!-- Right half -->
   <div style="background: #eee; height: 100%; width: 100%; overflow: scroll">
-    <app-recursive-json [jsonObject]="clickedFile?.content"></app-recursive-json>
+    <app-recursive-json [jsonObject]="clickedFile?.content"
+                        (clickOnElement)="onClickOnElement($event)"></app-recursive-json>
   </div>
 </div>

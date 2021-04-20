@@ -92,4 +92,8 @@ export class AppComponent implements OnInit {
   public onClickOnTranslationFile(translationFile: TranslationFile) {
     this.clickedFile = translationFile;
   }
+
+  onClickOnElement($event: string) {
+    console.log(AppComponent.TAG,  $event);
+  }
 }
