@@ -1,3 +1,15 @@
 .nv-file-over {
+  background: lavender !important;
+  border: 2px black solid !important;
+}
+
+.my-drop-zone {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: large;
+  height: 75px;
   background: lightblue;
+  border-radius: 10px;
+  border: 2px black dashed;
 }

@@ -1,13 +1,27 @@
-<div ng2FileDrop
-     [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
-     (fileOver)="onFileHooverOnBase($event)"
-     (onFileDrop)="onFileDropOnBase($event)"
-     [uploader]="fileUploader"
-     class="well my-drop-zone">
-  Base drop zone
-</div>
+<div fxLayout="row" style="height: 100%; width: 100%">
 
-<div *ngFor="let translationFile of translationFiles">
-  <div>Code: {{translationFile.languageCode}}</div>
-  <div style="font-size: xx-small; max-height: 40px; overflow: hidden">{{translationFile.content | json}}</div>
+  <!-- Left half -->
+  <div fxLayout="column" fxFlex="30%">
+    <div fxFlex="100%">
+      <div *ngFor="let translationFile of translationFiles"
+           (click)="onClickOnTranslationFile(translationFile)">
+        <div>Code: {{translationFile.languageCode}}</div>
+        <div style="font-size: xx-small; max-height: 40px; overflow: hidden">{{translationFile.content | json}}</div>
+      </div>
+    </div>
+
+    <div ng2FileDrop
+         [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
+         (fileOver)="onFileHooverOnBase($event)"
+         (onFileDrop)="onFileDropOnBase($event)"
+         [uploader]="fileUploader"
+         class="well my-drop-zone">
+      Drop here your files
+    </div>
+  </div>
+
+  <!-- Right half -->
+  <div style="background: #eee; height: 100%; width: 100%; overflow: scroll">
+    <app-recursive-json [jsonObject]="clickedFile?.content"></app-recursive-json>
+  </div>
 </div>

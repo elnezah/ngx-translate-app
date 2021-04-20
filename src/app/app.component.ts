@@ -19,6 +19,7 @@ export class AppComponent implements OnInit {
   public fileUploader = new FileUploader({});
 
   public translationFiles: TranslationFile[] = [];
+  public clickedFile: TranslationFile;
 
   public constructor() {
   }
@@ -67,6 +68,7 @@ export class AppComponent implements OnInit {
       }
     }
   }
+
   // endregion
 
   private readFileAsText(file: File): Promise<string> {
@@ -85,5 +87,9 @@ export class AppComponent implements OnInit {
     } else {
       this.translationFiles.push(translationFile);
     }
+  }
+
+  public onClickOnTranslationFile(translationFile: TranslationFile) {
+    this.clickedFile = translationFile;
   }
 }

@@ -1,0 +1,14 @@
+<div *ngFor="let key of keys"
+     [ngStyle]="{'margin-left': 10 * level + 'px'}">
+  {{key}}
+  <div *ngIf="isLeaf(jsonObject[key]); else isObject"
+       class="leaf">
+    {{jsonObject[key]}}
+  </div>
+
+  <ng-template #isObject>
+    <app-recursive-json [jsonObject]="jsonObject[key]"
+                        [level]="level + 1"></app-recursive-json>
+  </ng-template>
+
+</div>
