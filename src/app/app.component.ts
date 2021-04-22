@@ -93,7 +93,38 @@ export class AppComponent implements OnInit {
     this.clickedFile = translationFile;
   }
 
-  onClickOnElement($event: string) {
-    console.log(AppComponent.TAG,  $event);
+  public onClickOnElement($event: string[]): void {
+    const value = this.getValueForObjectPath(this.clickedFile.content, $event);
+  }
+
+  private getValueForObjectPath(object: any, path: string[]): any {
+    if (!path) {
+      return null;
+    } else if (path.length === 0) {
+      return object;
+    } else {
+      const p = [...path];
+      const child = object[p.shift()];
+      if (child) {
+        return this.getValueForObjectPath(child, p);
+      } else {
+        return null;
+      }
+    }
+  }
+
+  private setValueForObjectPath(value: any, object: any, path: string[]): void {
+    if (!path) {
+      return;
+    } else if (path.length === 1) {
+      return object[path[0]] = value;
+    } else {
+      const p = [...path];
+      const firstStep = p.shift();
+      if (!object[firstStep]) {
+        object[firstStep] = {};
+      }
+      return this.setValueForObjectPath(value, object[firstStep], p);
+    }
   }
 }

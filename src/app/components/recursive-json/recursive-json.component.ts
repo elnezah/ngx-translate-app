@@ -10,6 +10,7 @@ export class RecursiveJsonComponent implements OnInit, OnChanges {
 
   @Input() jsonObject;
   @Input() ownPath: string[] = [];
+  @Input() showValues = true;
   @Output() clickOnElement = new EventEmitter<string[]>();
 
   public keys: string[];
@@ -22,7 +23,9 @@ export class RecursiveJsonComponent implements OnInit, OnChanges {
   }
 
   public ngOnChanges(changes: SimpleChanges): void {
-    this.keys = Object.keys(this.jsonObject);
+    if (this.jsonObject) {
+      this.keys = Object.keys(this.jsonObject);
+    }
     this.level = this.ownPath.length;
   }
 

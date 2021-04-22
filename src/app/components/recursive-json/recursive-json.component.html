@@ -1,16 +1,18 @@
 <div *ngFor="let key of keys"
      [ngStyle]="{'margin-left': 10 * level + 'px'}">
+
   <div (click)="onClickOnElement(key)">{{key}}</div>
-  <div *ngIf="isLeaf(jsonObject[key]); else isObject"
+
+  <div *ngIf="isLeaf(jsonObject[key]) && showValues"
        class="leaf"
        (click)="onClickOnElement(key)">
     {{jsonObject[key]}}
   </div>
 
-  <ng-template #isObject>
-    <app-recursive-json [jsonObject]="jsonObject[key]"
-                        (clickOnElement)="onClickOnChild($event)"
-                        [ownPath]="pathForChild(key)"></app-recursive-json>
-  </ng-template>
+  <app-recursive-json *ngIf="!isLeaf(jsonObject[key])"
+                      [showValues]="showValues"
+                      [jsonObject]="jsonObject[key]"
+                      [ownPath]="pathForChild(key)"
+                      (clickOnElement)="onClickOnChild($event)"></app-recursive-json>
 
 </div>
