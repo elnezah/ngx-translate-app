@@ -3,13 +3,21 @@
   <!-- Left half -->
   <div fxLayout="column" fxFlex="30%">
     <div fxFlex="100%">
+      <!-- Languages list -->
       <div *ngFor="let translationFile of translationFiles"
            (click)="onClickOnTranslationFile(translationFile)">
-        <div>Code: {{translationFile.languageCode}}</div>
-        <div style="font-size: xx-small; max-height: 40px; overflow: hidden">{{translationFile.content | json}}</div>
+        <div>Language: {{translationFile.languageCode}}</div>
+      </div>
+
+      <!-- Key tree -->
+      <div style="background: #eee; width: 100%; overflow: scroll">
+        <app-recursive-json [jsonObject]="keyTree"
+                            [showValues]="false"
+                            (clickOnElement)="onClickOnElement($event)"></app-recursive-json>
       </div>
     </div>
 
+    <!-- File drop zone -->
     <div ng2FileDrop
          [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
          (fileOver)="onFileHooverOnBase($event)"
@@ -21,9 +29,11 @@
   </div>
 
   <!-- Right half -->
-  <div style="background: #eee; height: 100%; width: 100%; overflow: scroll">
-    <app-recursive-json [jsonObject]="clickedFile?.content"
-                        [showValues]="false"
-                        (clickOnElement)="onClickOnElement($event)"></app-recursive-json>
-  </div>
+  <form class="example-form">
+    <mat-form-field class="example-full-width">
+      <mat-label>Leave a comment</mat-label>
+      <textarea matInput placeholder="Ex. It makes me feel..."></textarea>
+    </mat-form-field>
+  </form>
+
 </div>

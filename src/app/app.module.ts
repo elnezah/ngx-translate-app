@@ -5,6 +5,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FileUploadModule } from 'ng2-file-upload';
 import { FlexModule } from '@angular/flex-layout';
 import { ComponentsModule } from './components/components.module';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { ComponentsModule } from './components/components.module';
     BrowserAnimationsModule,
     ComponentsModule,
     FileUploadModule,
-    FlexModule
+    FlexModule,
+    MatInputModule
   ],
   providers: [FileReader],
   bootstrap: [AppComponent]

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FileItem, FileUploader } from 'ng2-file-upload';
+import { ObjectToolboxService } from './services/object-toolbox.service';
 
 interface TranslationFile {
   fileName: string;
@@ -17,11 +18,12 @@ export class AppComponent implements OnInit {
 
   public hasBaseDropZoneOver: boolean;
   public fileUploader = new FileUploader({});
-
   public translationFiles: TranslationFile[] = [];
   public clickedFile: TranslationFile;
+  public pathOnEdit: string[];
+  public keyTree: any;
 
-  public constructor() {
+  public constructor(private ot: ObjectToolboxService) {
   }
 
   public ngOnInit(): void {
@@ -87,6 +89,12 @@ export class AppComponent implements OnInit {
     } else {
       this.translationFiles.push(translationFile);
     }
+
+    this.keyTree = {};
+    for (const tf of this.translationFiles) {
+      this.ot.mergeStructureIntoTarget(tf.content, this.keyTree);
+    }
+    console.log(AppComponent.TAG, 'keytree', this.keyTree);
   }
 
   public onClickOnTranslationFile(translationFile: TranslationFile) {
@@ -94,37 +102,7 @@ export class AppComponent implements OnInit {
   }
 
   public onClickOnElement($event: string[]): void {
-    const value = this.getValueForObjectPath(this.clickedFile.content, $event);
-  }
-
-  private getValueForObjectPath(object: any, path: string[]): any {
-    if (!path) {
-      return null;
-    } else if (path.length === 0) {
-      return object;
-    } else {
-      const p = [...path];
-      const child = object[p.shift()];
-      if (child) {
-        return this.getValueForObjectPath(child, p);
-      } else {
-        return null;
-      }
-    }
-  }
-
-  private setValueForObjectPath(value: any, object: any, path: string[]): void {
-    if (!path) {
-      return;
-    } else if (path.length === 1) {
-      return object[path[0]] = value;
-    } else {
-      const p = [...path];
-      const firstStep = p.shift();
-      if (!object[firstStep]) {
-        object[firstStep] = {};
-      }
-      return this.setValueForObjectPath(value, object[firstStep], p);
-    }
+    this.pathOnEdit = $event;
+    const value = this.ot.getValueForObjectPath(this.clickedFile.content, $event);
   }
 }

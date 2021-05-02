@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { ObjectToolboxService } from '../../services/object-toolbox.service';
 
 @Component({
   selector: 'app-recursive-json',
@@ -16,7 +17,7 @@ export class RecursiveJsonComponent implements OnInit, OnChanges {
   public keys: string[];
   public level = 0;
 
-  public constructor() {
+  public constructor(private ot: ObjectToolboxService) {
   }
 
   public ngOnInit(): void {
@@ -34,7 +35,7 @@ export class RecursiveJsonComponent implements OnInit, OnChanges {
   }
 
   public isLeaf(o: any): boolean {
-    return typeof o !== 'object';
+    return this.ot.isLeaf(o);
   }
 
   public pathForChild(key: string): string[] {
