@@ -6,6 +6,8 @@ import { FileUploadModule } from 'ng2-file-upload';
 import { FlexModule } from '@angular/flex-layout';
 import { ComponentsModule } from './components/components.module';
 import { MatInputModule } from '@angular/material/input';
+import { FileSaverModule } from 'ngx-filesaver';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -15,9 +17,11 @@ import { MatInputModule } from '@angular/material/input';
     BrowserModule,
     BrowserAnimationsModule,
     ComponentsModule,
+    FileSaverModule,
     FileUploadModule,
     FlexModule,
-    MatInputModule
+    MatInputModule,
+    FormsModule
   ],
   providers: [FileReader],
   bootstrap: [AppComponent]

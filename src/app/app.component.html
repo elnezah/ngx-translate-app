@@ -29,11 +29,19 @@
   </div>
 
   <!-- Right half -->
-  <form class="example-form">
-    <mat-form-field class="example-full-width">
-      <mat-label>Leave a comment</mat-label>
-      <textarea matInput placeholder="Ex. It makes me feel..."></textarea>
-    </mat-form-field>
+  <form class="example-form"
+        style="width: 100%">
+    <div fxLayout="column" fxLayoutAlign="space-around stretch" style="height: 100%;"
+         *ngIf="translationFiles as tfs; let i=index">
+      <mat-form-field class="example-full-width"
+                      (input)="onFieldChange($event, translationFile)"
+                      *ngFor="let translationFile of tfs; let i=index;">
+        <mat-label>{{translationFile.languageCode}}</mat-label>
+        <textarea matInput placeholder="Write here the text for language {{translationFile.languageCode}}"
+                  [value]="getValueOnEdit(translationFile)">
+        </textarea>
+      </mat-form-field>
+    </div>
   </form>
 
 </div>

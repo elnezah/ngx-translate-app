@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FileItem, FileUploader } from 'ng2-file-upload';
 import { ObjectToolboxService } from './services/object-toolbox.service';
+import { Tag } from '@angular/compiler/src/i18n/serializers/xml_helper';
 
 interface TranslationFile {
   fileName: string;
@@ -22,6 +23,7 @@ export class AppComponent implements OnInit {
   public clickedFile: TranslationFile;
   public pathOnEdit: string[];
   public keyTree: any;
+  public selectedContent: string[] = [];
 
   public constructor(private ot: ObjectToolboxService) {
   }
@@ -71,6 +73,25 @@ export class AppComponent implements OnInit {
     }
   }
 
+  public onClickOnTranslationFile(translationFile: TranslationFile) {
+    this.clickedFile = translationFile;
+  }
+
+  public onClickOnElement($event: string[]): void {
+    this.pathOnEdit = $event;
+    this.selectedContent = [];
+    for (const translationFile of this.translationFiles) {
+      this.selectedContent[translationFile.languageCode] = this.ot.getValueForObjectPath(translationFile.content, this.pathOnEdit);
+    }
+  }
+
+  public onFieldChange($event: Event, translationFile: TranslationFile): void {
+    this.ot.setValueForObjectPath(
+      ($event.target as HTMLInputElement).value,
+      translationFile.content,
+      this.pathOnEdit);
+  }
+
   // endregion
 
   private readFileAsText(file: File): Promise<string> {
@@ -94,15 +115,9 @@ export class AppComponent implements OnInit {
     for (const tf of this.translationFiles) {
       this.ot.mergeStructureIntoTarget(tf.content, this.keyTree);
     }
-    console.log(AppComponent.TAG, 'keytree', this.keyTree);
   }
 
-  public onClickOnTranslationFile(translationFile: TranslationFile) {
-    this.clickedFile = translationFile;
-  }
-
-  public onClickOnElement($event: string[]): void {
-    this.pathOnEdit = $event;
-    const value = this.ot.getValueForObjectPath(this.clickedFile.content, $event);
+  public getValueOnEdit(translationFile: TranslationFile): string {
+    return this.ot.getValueForObjectPath(translationFile.content, this.pathOnEdit);
   }
 }
