@@ -1,4 +1,4 @@
-<div fxLayout="row" style="height: 100%; width: 100%">
+<div mat-app-background fxLayout="row" style="height: 100%; width: 100%">
 
   <!-- Left half -->
   <div fxLayout="column" fxFlex="30%">
@@ -29,19 +29,44 @@
   </div>
 
   <!-- Right half -->
-  <form class="example-form"
-        style="width: 100%">
-    <div fxLayout="column" fxLayoutAlign="space-around stretch" style="height: 100%;"
-         *ngIf="translationFiles as tfs; let i=index">
-      <mat-form-field class="example-full-width"
-                      (input)="onFieldChange($event, translationFile)"
-                      *ngFor="let translationFile of tfs; let i=index;">
-        <mat-label>{{translationFile.languageCode}}</mat-label>
-        <textarea matInput placeholder="Write here the text for language {{translationFile.languageCode}}"
-                  [value]="getValueOnEdit(translationFile)">
-        </textarea>
-      </mat-form-field>
+  <div fxLayout="column" fxLayoutAlign="start start" style="width: 100%">
+    <mat-toolbar color="primary" fxLayout="row" fxLayoutAlign="space-between center">
+      <span>ngx-translate editor</span>
+      <div>
+        <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon"
+                (click)="onClickOnSave()">
+          <mat-icon>save</mat-icon>
+        </button>
+      </div>
+    </mat-toolbar>
+
+    <!-- Path container -->
+    <div id="path-container"
+         fxLayout="row" fxLayoutAlign="start center">
+        <span *ngFor="let e of pathOnEdit; last as isLast">
+          {{e}}
+          <span *ngIf="!isLast" style="color: #536DFE">&nbsp;>&nbsp;</span>
+        </span>
     </div>
-  </form>
+
+
+    <!-- Edit fields -->
+    <form class="example-form"
+          style="width: 100%; height: 100%">
+      <div fxLayout="column" fxLayoutAlign="space-around stretch" style="height: 100%;"
+           *ngIf="translationFiles as tfs; let i=index">
+        <mat-form-field class="example-full-width" style="height: 100%"
+                        (input)="onFieldChange($event, translationFile)"
+                        *ngFor="let translationFile of tfs; let i=index;">
+          <mat-label>{{translationFile.languageCode}}</mat-label>
+          <textarea matInput  matTextareaAutosize matAutosizeMinRows=2
+                    placeholder="Write here the text for language {{translationFile.languageCode}}"
+                    [value]="getValueOnEdit(translationFile)">
+        </textarea>
+        </mat-form-field>
+      </div>
+    </form>
+
+  </div>
 
 </div>

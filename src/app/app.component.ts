@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FileItem, FileUploader } from 'ng2-file-upload';
 import { ObjectToolboxService } from './services/object-toolbox.service';
-import { Tag } from '@angular/compiler/src/i18n/serializers/xml_helper';
+import { FileSaverService } from 'ngx-filesaver';
 
 interface TranslationFile {
   fileName: string;
@@ -25,7 +25,8 @@ export class AppComponent implements OnInit {
   public keyTree: any;
   public selectedContent: string[] = [];
 
-  public constructor(private ot: ObjectToolboxService) {
+  public constructor(private fileSaver: FileSaverService,
+                     private ot: ObjectToolboxService) {
   }
 
   public ngOnInit(): void {
@@ -90,6 +91,16 @@ export class AppComponent implements OnInit {
       ($event.target as HTMLInputElement).value,
       translationFile.content,
       this.pathOnEdit);
+  }
+
+  public onClickOnSave(): void {
+    if (this.translationFiles) {
+      for (const tf of this.translationFiles) {
+
+        const blob = JSON.stringify(tf.content);
+        this.fileSaver.saveText(blob, tf.fileName);
+      }
+    }
   }
 
   // endregion
