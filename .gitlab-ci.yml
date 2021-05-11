@@ -8,7 +8,7 @@ pages:
   script:
     - npm install -g @angular/cli@11.2.9
     - npm install
-    - ng build --base-href=https://j-garces.gitlab.io/ngx-translate-app/
+    - ng build --base-href=/ngx-translate-app/
     - mv dist/ngx-translate-app/* public/
   artifacts:
     paths:
