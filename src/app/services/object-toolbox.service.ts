@@ -53,7 +53,7 @@ export class ObjectToolboxService {
     const keys = Object.keys(obj);
 
     for (const key of keys) {
-      if(this.isLeaf(obj[key])) {
+      if (this.isLeaf(obj[key])) {
         target[key] = obj[key];
       } else {
         target[key] = {};
@@ -69,17 +69,18 @@ export class ObjectToolboxService {
    * @param target the target object (might get overwritten)
    */
   public mergeStructureIntoTarget(obj: any, target: any): void {
+    console.log(ObjectToolboxService.TAG, 'mergeStructureIntoTarget', {obj, target});
     if (!target) {
       target = {};
     }
     const keys = Object.keys(obj);
 
     for (const key of keys) {
-      if(this.isLeaf(obj[key])) {
+      if (this.isLeaf(obj[key])) {
         target[key] = null;
       } else {
         target[key] = {};
-        this.mergeIntoTarget(obj[key], target[key]);
+        this.mergeStructureIntoTarget(obj[key], target[key]);
       }
     }
   }

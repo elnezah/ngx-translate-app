@@ -97,7 +97,7 @@ export class AppComponent implements OnInit {
     if (this.translationFiles) {
       for (const tf of this.translationFiles) {
 
-        const blob = JSON.stringify(tf.content);
+        const blob = JSON.stringify(tf.content, null, 3);
         this.fileSaver.saveText(blob, tf.fileName);
       }
     }
@@ -121,8 +121,9 @@ export class AppComponent implements OnInit {
     } else {
       this.translationFiles.push(translationFile);
     }
-
-    this.keyTree = {};
+    if (!this.keyTree) {
+      this.keyTree = {};
+    }
     for (const tf of this.translationFiles) {
       this.ot.mergeStructureIntoTarget(tf.content, this.keyTree);
     }
