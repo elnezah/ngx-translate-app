@@ -5,7 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "build GitLab": "ng build --base-href=/ngx-translate-app/",
+    "build GitLab": "ng build --base-href=https://j-garces.gitlab.io/ngx-translate-app/",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
