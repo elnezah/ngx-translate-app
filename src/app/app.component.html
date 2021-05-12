@@ -13,7 +13,7 @@
       <div style="background: #eee; width: 100%; overflow: scroll">
         <app-recursive-json [jsonObject]="keyTree"
                             [showValues]="false"
-                            (clickOnElement)="onClickOnElement($event)"></app-recursive-json>
+                            (clickOnElement)="onClickOnTreeElement($event)"></app-recursive-json>
       </div>
     </div>
 
@@ -52,14 +52,15 @@
 
     <!-- Edit fields -->
     <form class="example-form"
-          style="width: 100%; height: 100%">
+          style="width: 100%; height: 100%"
+          *ngIf="pathOnEdit">
       <div fxLayout="column" fxLayoutAlign="space-around stretch" style="height: 100%;"
            *ngIf="translationFiles as tfs; let i=index">
         <mat-form-field class="example-full-width" style="height: 100%"
                         (input)="onFieldChange($event, translationFile)"
                         *ngFor="let translationFile of tfs; let i=index;">
           <mat-label>{{translationFile.languageCode}}</mat-label>
-          <textarea matInput  matTextareaAutosize matAutosizeMinRows=2
+          <textarea matInput matTextareaAutosize matAutosizeMinRows=2
                     placeholder="Write here the text for language {{translationFile.languageCode}}"
                     [value]="getValueOnEdit(translationFile)">
         </textarea>

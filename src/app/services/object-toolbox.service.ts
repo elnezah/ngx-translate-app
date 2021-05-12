@@ -53,11 +53,16 @@ export class ObjectToolboxService {
     const keys = Object.keys(obj);
 
     for (const key of keys) {
-      if (this.isLeaf(obj[key])) {
-        target[key] = obj[key];
-      } else {
-        target[key] = {};
+
+      if (target[key]) {
         this.mergeIntoTarget(obj[key], target[key]);
+      } else {
+        if (this.isLeaf(obj[key])) {
+          target[key] = obj[key];
+        } else {
+          target[key] = {};
+          this.mergeIntoTarget(obj[key], target[key]);
+        }
       }
     }
   }
@@ -69,23 +74,26 @@ export class ObjectToolboxService {
    * @param target the target object (might get overwritten)
    */
   public mergeStructureIntoTarget(obj: any, target: any): void {
-    console.log(ObjectToolboxService.TAG, 'mergeStructureIntoTarget', {obj, target});
     if (!target) {
       target = {};
     }
     const keys = Object.keys(obj);
 
     for (const key of keys) {
-      if (this.isLeaf(obj[key])) {
-        target[key] = null;
-      } else {
-        target[key] = {};
+      if (target[key]) {
         this.mergeStructureIntoTarget(obj[key], target[key]);
+      } else {
+        if (this.isLeaf(obj[key])) {
+          target[key] = target[key] ? target[key] : null; // Will define target[key] if it didn't exist
+        } else {
+          target[key] = {};
+          this.mergeStructureIntoTarget(obj[key], target[key]);
+        }
       }
     }
   }
 
   public isLeaf(o: any): boolean {
-    return typeof o !== 'object';
+    return o === null || typeof o !== 'object';
   }
 }

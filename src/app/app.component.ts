@@ -23,7 +23,6 @@ export class AppComponent implements OnInit {
   public clickedFile: TranslationFile;
   public pathOnEdit: string[];
   public keyTree: any;
-  public selectedContent: string[] = [];
 
   public constructor(private fileSaver: FileSaverService,
                      private ot: ObjectToolboxService) {
@@ -78,12 +77,9 @@ export class AppComponent implements OnInit {
     this.clickedFile = translationFile;
   }
 
-  public onClickOnElement($event: string[]): void {
-    this.pathOnEdit = $event;
-    this.selectedContent = [];
-    for (const translationFile of this.translationFiles) {
-      this.selectedContent[translationFile.languageCode] = this.ot.getValueForObjectPath(translationFile.content, this.pathOnEdit);
-    }
+  public onClickOnTreeElement($event: string[]): void {
+    const target = this.ot.getValueForObjectPath(this.keyTree, $event);
+    this.pathOnEdit = this.ot.isLeaf(target) ? $event : null;
   }
 
   public onFieldChange($event: Event, translationFile: TranslationFile): void {
