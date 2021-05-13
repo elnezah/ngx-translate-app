@@ -1,73 +1,79 @@
-<div mat-app-background fxLayout="row" style="height: 100%; width: 100%">
+<div fxLayout="column" fxFill>
+  <mat-toolbar color="primary" fxLayout="row" fxLayoutAlign="space-between center">
+    <span>ngx-translate editor</span>
+    <div>
+      <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon"
+              (click)="onClickOnSave()">
+        <mat-icon>save</mat-icon>
+      </button>
+    </div>
+  </mat-toolbar>
 
-  <!-- Left half -->
-  <div fxLayout="column" fxFlex="30%">
-    <div fxFlex="100%">
-      <!-- Languages list -->
-      <div *ngFor="let translationFile of translationFiles"
-           (click)="onClickOnTranslationFile(translationFile)">
-        <div>Language: {{translationFile.languageCode}}</div>
+  <div fxLayout="row" style="height: 100%; width: 100%">
+
+    <!-- Left half -->
+    <div fxLayout="column" fxFlex="30%">
+      <div fxFlex="100%">
+        <!-- Key tree -->
+        <div style="background: #eee; width: 100%; overflow: scroll">
+          <app-recursive-json [jsonObject]="keyTree"
+                              [showValues]="false"
+                              (clickOnElement)="onClickOnTreeElement($event)"></app-recursive-json>
+        </div>
       </div>
 
-      <!-- Key tree -->
-      <div style="background: #eee; width: 100%; overflow: scroll">
-        <app-recursive-json [jsonObject]="keyTree"
-                            [showValues]="false"
-                            (clickOnElement)="onClickOnTreeElement($event)"></app-recursive-json>
+      <!-- File drop zone -->
+      <div ng2FileDrop
+           [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
+           (fileOver)="onFileHooverOnBase($event)"
+           (onFileDrop)="onFileDropOnBase($event)"
+           [uploader]="fileUploader"
+           class="well my-drop-zone">
+        Drop here your files
       </div>
     </div>
 
-    <!-- File drop zone -->
-    <div ng2FileDrop
-         [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
-         (fileOver)="onFileHooverOnBase($event)"
-         (onFileDrop)="onFileDropOnBase($event)"
-         [uploader]="fileUploader"
-         class="well my-drop-zone">
-      Drop here your files
-    </div>
-  </div>
+    <!-- Right half -->
+    <div fxLayout="column" fxLayoutAlign="start start" style="width: 100%">
 
-  <!-- Right half -->
-  <div fxLayout="column" fxLayoutAlign="start start" style="width: 100%">
-    <mat-toolbar color="primary" fxLayout="row" fxLayoutAlign="space-between center">
-      <span>ngx-translate editor</span>
-      <div>
-        <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon"
-                (click)="onClickOnSave()">
-          <mat-icon>save</mat-icon>
-        </button>
-      </div>
-    </mat-toolbar>
-
-    <!-- Path container -->
-    <div id="path-container"
-         fxLayout="row" fxLayoutAlign="start center">
+      <!-- Path container -->
+      <div id="path-container"
+           fxLayout="row" fxLayoutAlign="start center">
         <span *ngFor="let e of pathOnEdit; last as isLast">
           {{e}}
           <span *ngIf="!isLast" style="color: #536DFE">&nbsp;>&nbsp;</span>
         </span>
+      </div>
+
+
+      <!-- Edit fields -->
+      <div style="width: 100%; height: 100%; overflow: scroll; background: #BDBDBD">
+        <form class="example-form" *ngIf="pathOnEdit">
+          <div fxLayout="column" fxLayoutAlign="space-around stretch" style="height: 100%"
+               *ngIf="translationFiles as tfs; let i=index">
+            <mat-card *ngFor="let translationFile of tfs; let i=index;">
+              <div fxLayout="row" fxLayoutAlign="start center">
+                <img class="language-flag"
+                     [src]="'assets/img/flag-icons/' + languageCode2FlagFilename(translationFile.languageCode)">
+                <div class="language-card-title"
+                  [ngClass]="{'mat-error': !getValueOnEdit(translationFile)}">
+                  Language code: {{translationFile.languageCode}}
+                </div>
+              </div>
+              <mat-card-content>
+                <mat-form-field class="example-full-width" style="height: 100%; width: 100%"
+                                (input)="onFieldChange($event, translationFile)">
+            <textarea matInput matTextareaAutosize matAutosizeMinRows=2
+                      [value]="getValueOnEdit(translationFile)">
+        </textarea>
+                </mat-form-field>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </form>
+      </div>
+
     </div>
 
-
-    <!-- Edit fields -->
-    <form class="example-form"
-          style="width: 100%; height: 100%"
-          *ngIf="pathOnEdit">
-      <div fxLayout="column" fxLayoutAlign="space-around stretch" style="height: 100%;"
-           *ngIf="translationFiles as tfs; let i=index">
-        <mat-form-field class="example-full-width" style="height: 100%"
-                        (input)="onFieldChange($event, translationFile)"
-                        *ngFor="let translationFile of tfs; let i=index;">
-          <mat-label>{{translationFile.languageCode}}</mat-label>
-          <textarea matInput matTextareaAutosize matAutosizeMinRows=2
-                    placeholder="Write here the text for language {{translationFile.languageCode}}"
-                    [value]="getValueOnEdit(translationFile)">
-        </textarea>
-        </mat-form-field>
-      </div>
-    </form>
-
   </div>
-
 </div>

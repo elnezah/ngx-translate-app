@@ -1,6 +1,7 @@
 .nv-file-over {
-  background: lavender !important;
+  background: #536DFE !important;
   border: 2px black solid !important;
+  color: #fff;
 }
 
 .my-drop-zone {
@@ -9,7 +10,7 @@
   align-items: center;
   font-size: large;
   height: 75px;
-  background: lightblue;
+  background: #D1C4E9;
   border-radius: 10px;
   border: 2px black dashed;
 }
@@ -19,4 +20,20 @@
   background: #C5CAE9;
   color: #212121;
   border-top: #BDBDBD 1px solid;
+  padding-left: 1em;
+}
+mat-card {
+  height: 100%;
+  margin: 1em;
+}
+
+.language-flag {
+  max-width: 30px;
+  max-height: 30px;
+}
+
+.language-card-title {
+  font-weight: 500;
+  font-size: large;
+  margin-left: .5em;
 }

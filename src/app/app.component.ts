@@ -128,4 +128,8 @@ export class AppComponent implements OnInit {
   public getValueOnEdit(translationFile: TranslationFile): string {
     return this.ot.getValueForObjectPath(translationFile.content, this.pathOnEdit);
   }
+
+  public languageCode2FlagFilename(code: string): string {
+    return code.toUpperCase() + '.png';
+  }
 }
