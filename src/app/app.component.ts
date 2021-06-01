@@ -143,8 +143,6 @@ export class AppComponent implements OnInit {
           throw new Error('trying to create a key that exists already')
         }
         target[newKey] = null;
-
-        console.log(AppComponent.TAG, 'onClickOnAddField afterClosed', {r, newKey, target});
       } catch (e) {
         this.dialog.open(AlertComponent, {
           data: {
