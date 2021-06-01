@@ -15,7 +15,7 @@
     <div fxLayout="column" fxFlex="30%">
       <div fxFlex="100%">
         <!-- Key tree -->
-        <div style="background: #eee; width: 100%; overflow: scroll">
+        <div style="width: 100%; padding: .3em;overflow: scroll">
           <app-recursive-json [jsonObject]="keyTree"
                               [showValues]="false"
                               (clickOnElement)="onClickOnTreeElement($event)"></app-recursive-json>
@@ -37,12 +37,19 @@
     <div fxLayout="column" fxLayoutAlign="start start" style="width: 100%">
 
       <!-- Path container -->
-      <div id="path-container"
-           fxLayout="row" fxLayoutAlign="start center">
-        <span *ngFor="let e of pathOnEdit; last as isLast">
-          {{e}}
-          <span *ngIf="!isLast" style="color: #536DFE">&nbsp;>&nbsp;</span>
-        </span>
+      <div id="path-container" fxLayout="row" fxLayoutAlign="space-between center">
+
+        <div fxLayout="row" fxLayoutAlign="start center">
+          <span *ngFor="let e of pathOnEdit; last as isLast">
+            {{e}}
+            <span *ngIf="!isLast" style="color: #536DFE">&nbsp;>&nbsp;</span>
+          </span>
+        </div>
+
+        <span class="material-icons"
+              *ngIf="pathOnEdit"
+              (click)="onClickOnAddField()">add_circle_outline</span>
+
       </div>
 
 
@@ -50,13 +57,13 @@
       <div style="width: 100%; height: 100%; overflow: scroll; background: #BDBDBD">
         <form class="example-form" *ngIf="pathOnEdit">
           <div fxLayout="column" fxLayoutAlign="space-around stretch" style="height: 100%"
-               *ngIf="translationFiles as tfs; let i=index">
-            <mat-card *ngFor="let translationFile of tfs; let i=index;">
+               *ngIf="isLeafSelected">
+            <mat-card *ngFor="let translationFile of translationFiles; let i=index;">
               <div fxLayout="row" fxLayoutAlign="start center">
                 <img class="language-flag"
                      [src]="'assets/img/flag-icons/' + languageCode2FlagFilename(translationFile.languageCode)">
                 <div class="language-card-title"
-                  [ngClass]="{'mat-error': !getValueOnEdit(translationFile)}">
+                     [ngClass]="{'mat-error': !getValueOnEdit(translationFile)}">
                   Language code: {{translationFile.languageCode}}
                 </div>
               </div>

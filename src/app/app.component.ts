@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FileItem, FileUploader } from 'ng2-file-upload';
 import { ObjectToolboxService } from './services/object-toolbox.service';
 import { FileSaverService } from 'ngx-filesaver';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertComponent } from './components/dialog/alert/alert.component';
 
 interface TranslationFile {
   fileName: string;
@@ -23,8 +25,10 @@ export class AppComponent implements OnInit {
   public clickedFile: TranslationFile;
   public pathOnEdit: string[];
   public keyTree: any;
+  public isLeafSelected: boolean;
 
-  public constructor(private fileSaver: FileSaverService,
+  public constructor(private dialog: MatDialog,
+                     private fileSaver: FileSaverService,
                      private ot: ObjectToolboxService) {
   }
 
@@ -38,7 +42,7 @@ export class AppComponent implements OnInit {
   }
 
   public onFileDropOnBase($event: File[]) {
-    console.log(AppComponent.TAG, {$event});
+    // console.log(AppComponent.TAG, {$event});
   }
 
   private async afterAddingFiles(fi: FileItem): Promise<void> {
@@ -79,7 +83,8 @@ export class AppComponent implements OnInit {
 
   public onClickOnTreeElement($event: string[]): void {
     const target = this.ot.getValueForObjectPath(this.keyTree, $event);
-    this.pathOnEdit = this.ot.isLeaf(target) ? $event : null;
+    this.isLeafSelected = this.ot.isLeaf(target);
+    this.pathOnEdit = $event;
   }
 
   public onFieldChange($event: Event, translationFile: TranslationFile): void {
@@ -97,6 +102,30 @@ export class AppComponent implements OnInit {
         this.fileSaver.saveText(blob, tf.fileName);
       }
     }
+  }
+
+  public async onClickOnAddField(): Promise<void> {
+    const data = {
+      header: 'Enter a name',
+      message: 'Please enter a name for the new node',
+      buttons: [
+        {
+          text: 'Save',
+          role: 'save'
+        },
+        {
+          text: 'Cancel',
+          role: 'cancel'
+        }
+      ],
+      inputs: [
+        {id: 'keyName', tag: 'Name the new text', placeholder: 'Ex.: input_tag_email', value: ''}
+      ]
+    };
+    const d = this.dialog.open(AlertComponent, {data});
+    const r = await d.afterClosed().toPromise();
+    const newKey = r.data.inputs[0].value;
+    console.log(AppComponent.TAG, 'onClickOnAddField afterClosed', {r, newKey});
   }
 
   // endregion

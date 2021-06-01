@@ -1,0 +1,24 @@
+<h2 mat-dialog-title>
+  {{this.data?.header}}
+</h2>
+
+
+<mat-dialog-content>
+  {{this.data?.message}}
+
+  <div fxLayout="column">
+    <mat-form-field class="example-full-width"  style="margin-top: 1em"
+                    *ngFor="let i of inputs">
+      <input matInput [placeholder]="i.placeholder" [value]="i.value"
+             (change)="onInputChange($event, i)">
+    </mat-form-field>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions fxLayout="row" fxLayoutAlign="end center">
+  <button mat-button
+          (click)="onClickOnButton(b)"
+          *ngFor="let b of this.data?.buttons">
+    {{b.text}}
+  </button>
+</mat-dialog-actions>
