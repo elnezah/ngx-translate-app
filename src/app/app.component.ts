@@ -124,8 +124,37 @@ export class AppComponent implements OnInit {
     };
     const d = this.dialog.open(AlertComponent, {data});
     const r = await d.afterClosed().toPromise();
-    const newKey = r.data.inputs[0].value;
-    console.log(AppComponent.TAG, 'onClickOnAddField afterClosed', {r, newKey});
+
+    if (r.role === 'save') {
+      try {
+        const newKey = r.data.inputs[0].value.trim();
+        if (!newKey || newKey.length === 0) {
+          throw new Error('empty name given for new key');
+        }
+
+        // Create a new son or sibling in this.keyTree
+        const path = [...this.pathOnEdit];
+        let target = this.ot.getValueForObjectPath(this.keyTree, path);
+        if (this.ot.isLeaf(target)) {
+          path.pop();
+          target = this.ot.getValueForObjectPath(this.keyTree, path);
+        }
+        if  (target[newKey] !== undefined) {
+          throw new Error('trying to create a key that exists already')
+        }
+        target[newKey] = null;
+
+        console.log(AppComponent.TAG, 'onClickOnAddField afterClosed', {r, newKey, target});
+      } catch (e) {
+        this.dialog.open(AlertComponent, {
+          data: {
+            header: 'Error',
+            message: 'Something went wrong creating the new node. Did you enter a valid name? (Key names must not be empty must all be different in the same level.)',
+            buttons: [{text: 'Close', role: 'close'}]
+          }
+        });
+      }
+    }
   }
 
   // endregion
