@@ -5,7 +5,7 @@ import { FileSaverService } from 'ngx-filesaver';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertComponent } from './components/dialog/alert/alert.component';
 
-interface TranslationFile {
+export interface TranslationFile {
   fileName: string;
   languageCode: string;
   content: any;

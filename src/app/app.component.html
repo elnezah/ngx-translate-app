@@ -33,6 +33,7 @@
         <div style="width: 100%; padding: .3em;overflow: scroll">
           <app-recursive-json [jsonObject]="keyTree"
                               [showValues]="false"
+                              [translationsFiles]="translationFiles"
                               (clickOnElement)="onClickOnTreeElement($event)"></app-recursive-json>
         </div>
       </div>

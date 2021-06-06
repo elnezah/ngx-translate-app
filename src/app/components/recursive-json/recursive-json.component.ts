@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { ObjectToolboxService } from '../../services/object-toolbox.service';
+import { TranslationFile } from '../../app.component';
 
 @Component({
   selector: 'app-recursive-json',
@@ -12,6 +13,7 @@ export class RecursiveJsonComponent implements OnInit, OnChanges {
   @Input() jsonObject;
   @Input() ownPath: string[] = [];
   @Input() showValues = true;
+  @Input() translationsFiles: TranslationFile[];
   @Output() clickOnElement = new EventEmitter<string[]>();
 
   public keys: string[];
@@ -44,5 +46,21 @@ export class RecursiveJsonComponent implements OnInit, OnChanges {
 
   public onClickOnChild($event: string[]) {
     this.clickOnElement.emit($event);
+  }
+
+  public isNodeTranslationComplete(key: string): boolean {
+
+    console.log(RecursiveJsonComponent.TAG, 'isNodeTranslationComplete');
+
+    if (this.translationsFiles) {
+      for (const tf of this.translationsFiles) {
+        const v = this.ot.getValueForObjectPath(tf.content, [...this.ownPath, key]);
+        if (!v) {
+          return false;
+        }
+      }
+    }
+
+    return true;
   }
 }
