@@ -160,6 +160,8 @@ export class AppComponent implements OnInit {
         });
       }
     }
+
+    this.totalLeaves = this.ot.countLeaves(this.keyTree);
   }
 
   // endregion
