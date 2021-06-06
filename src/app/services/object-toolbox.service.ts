@@ -93,6 +93,41 @@ export class ObjectToolboxService {
     }
   }
 
+  public countLeaves(obj: any, count: number = 0): number {
+    const keys = Object.keys(obj);
+
+    if (keys) {
+      for (const k of keys) {
+        if (this.isLeaf(obj[k])) {
+          count += 1;
+        } else {
+          count = this.countLeaves(obj[k], count);
+        }
+      }
+    }
+
+    return count;
+  }
+
+  public countNonEmptyLeaves(obj: any, count: number = 0): number {
+    const keys = Object.keys(obj);
+
+    if (keys) {
+      for (const k of keys) {
+        if (this.isLeaf(obj[k]) && obj[k] !== null && obj[k] !== null) {
+          if (obj[k] instanceof String && obj[k].trim().length === 0) {
+            continue;
+          }
+          count += 1;
+        } else {
+          count = this.countNonEmptyLeaves(obj[k], count);
+        }
+      }
+    }
+
+    return count;
+  }
+
   public isLeaf(o: any): boolean {
     return o === null || typeof o !== 'object';
   }

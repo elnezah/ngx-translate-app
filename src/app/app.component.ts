@@ -9,6 +9,7 @@ interface TranslationFile {
   fileName: string;
   languageCode: string;
   content: any;
+  leaveCount: number;
 }
 
 @Component({
@@ -26,6 +27,7 @@ export class AppComponent implements OnInit {
   public pathOnEdit: string[];
   public keyTree: any;
   public isLeafSelected: boolean;
+  public totalLeaves: number;
 
   public constructor(private dialog: MatDialog,
                      private fileSaver: FileSaverService,
@@ -55,12 +57,14 @@ export class AppComponent implements OnInit {
 
       if (fileExtension === 'json') {
         const content = await this.readFileAsText(fi._file);
+        const c = JSON.parse(content);
         if (this.translationFiles && this.translationFiles.some(t => t.languageCode === fileName)) {
           if (confirm('There is already content for this language. Do you want to overwrite current content for "' + fileName + '"?')) {
             this.loadLanguage({
               fileName: fileName + '.' + fileExtension,
               languageCode: fileName,
-              content: JSON.parse(content)
+              content: c,
+              leaveCount: this.ot.countNonEmptyLeaves(c)
             });
           } else {
             alert('Your file was NOT loaded');
@@ -69,11 +73,14 @@ export class AppComponent implements OnInit {
           this.loadLanguage({
             fileName: fileName + '.' + fileExtension,
             languageCode: fileName,
-            content: JSON.parse(content)
+            content: c,
+            leaveCount: this.ot.countNonEmptyLeaves(c)
           });
         }
-
       }
+
+      console.log(AppComponent.TAG, 'afterAddingFiles', this.translationFiles);
+      this.totalLeaves = this.ot.countLeaves(this.keyTree);
     }
   }
 
@@ -139,8 +146,8 @@ export class AppComponent implements OnInit {
           path.pop();
           target = this.ot.getValueForObjectPath(this.keyTree, path);
         }
-        if  (target[newKey] !== undefined) {
-          throw new Error('trying to create a key that exists already')
+        if (target[newKey] !== undefined) {
+          throw new Error('trying to create a key that exists already');
         }
         target[newKey] = null;
       } catch (e) {
