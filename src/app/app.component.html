@@ -14,6 +14,21 @@
     <!-- Left half -->
     <div fxLayout="column" fxFlex="30%">
       <div fxFlex="100%">
+        <!-- Languages summary -->
+        <div style="padding: .3em; background: #D1C4E9"
+             *ngIf="translationFiles && translationFiles.length > 0">
+          <div style="font-weight: 600">
+            Loaded languages
+          </div>
+          <div *ngFor="let tf of translationFiles" style="margin-left: 1em"
+               fxLayout="row" fxLayoutAlign="start center"
+               [ngStyle]="{'color': tf.leaveCount < this.totalLeaves ? 'red' : 'unset'}">
+            <img class="language-flag" style="margin-right: 1em"
+                 [src]="'assets/img/flag-icons/' + languageCode2FlagFilename(tf.languageCode)">
+            {{tf.languageCode}}:&nbsp;{{tf.leaveCount}}/{{this.totalLeaves}}
+          </div>
+        </div>
+
         <!-- Key tree -->
         <div style="width: 100%; padding: .3em;overflow: scroll">
           <app-recursive-json [jsonObject]="keyTree"
