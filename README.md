@@ -13,7 +13,7 @@ It looks like this:
 * Drag your files to the area at the bottom left. 
 * Find the key you want to edit in the tree view on the left. 
 * Edit all you need. You can add a sybling (or son, depending on what's selected) by clicking + on the top right.
-* Don't forgeet to save your work (top most right), this will "download" your json files
+* Don't forget to save your work (top most right), this will "download" your json files
 * Replace the json files in your project for the ones you just got.
 
 If you see something highlighted in red, there is a missing translation.
