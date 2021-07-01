@@ -1,6 +1,8 @@
 # NgxTranslateApp
 
-NgxTranslateApp is an editor for the language json files from ngx-translate (https://github.com/ngx-translate/). It's a simple yet functional tool that eases viewing and editing the content of the json files. It is an Angular 9 web app with no backend, all happens in your computer.
+NgxTranslateApp is an editor for the language json files from [ngx-translate](http://www.ngx-translate.com/), which is a very popular internationalization library for Angular well supported in [Ionic](https://ionicframework.com/). 
+
+NgxTranslateApp is a simple yet functional tool that eases viewing and editing the content of the json files. It is an Angular 9 web app with no backend, all happens in your computer.
 
 You can try it here: https://elnezah.github.io/ngx-translate-app/
 
