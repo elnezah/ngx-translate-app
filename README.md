@@ -1,27 +1,31 @@
 # NgxTranslateApp
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.0.1.
+NgxTranslateApp is an editor for the language json files from [ngx-translate](http://www.ngx-translate.com/), which is a very popular internationalization library for Angular well supported in [Ionic](https://ionicframework.com/). 
 
-## Development server
+NgxTranslateApp is a simple yet functional tool that eases viewing and editing the content of the json files. It is an Angular 9 web app with no backend, all happens in your computer.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+You can try it here: https://elnezah.github.io/ngx-translate-app/
 
-## Code scaffolding
+It looks like this:
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+<img width="965" alt="Bildschirmfoto 2021-07-01 um 19 38 20" src="https://user-images.githubusercontent.com/20442399/124167321-31354b00-daa4-11eb-8a75-3e9de6c50d7e.png">
 
-## Build
+# Instructions
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+* Drag your files to the area at the bottom left. 
+* Find the key you want to edit in the tree view on the left. 
+* Edit all you need. You can add a sybling (or son, depending on what's selected) by clicking + on the top right.
+* Don't forget to save your work (top most right), this will "download" your json files
+* Replace the json files in your project for the ones you just got.
 
-## Running unit tests
+If you see something highlighted in red, there is a missing translation.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+# Work in progress
 
-## Running end-to-end tests
+This is a personal project in progress. As far as tested, it works just fine, but I don't get responsible is something goes wrong with your trasnlations.
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+## Comming...
 
-## Further help
+I plan to prettyfy the UI, add a search function and maybe someday make it possible to git pull and commit directly from the app. It will probably take loooong. Help is wellcome 😊
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+( And I also need to translate the tool itself 🤷‍♂️ )
