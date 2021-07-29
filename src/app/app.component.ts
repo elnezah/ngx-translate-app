@@ -3,7 +3,7 @@ import { FileItem, FileUploader } from 'ng2-file-upload';
 import { ObjectToolboxService } from './services/object-toolbox.service';
 import { FileSaverService } from 'ngx-filesaver';
 import { MatDialog } from '@angular/material/dialog';
-import { AlertComponent } from './components/dialog/alert/alert.component';
+import { AlertComponent, DataObject } from './components/dialog/alert/alert.component';
 
 export interface TranslationFile {
   fileName: string;
@@ -59,7 +59,18 @@ export class AppComponent implements OnInit {
         const content = await this.readFileAsText(fi._file);
         const c = JSON.parse(content);
         if (this.translationFiles && this.translationFiles.some(t => t.languageCode === fileName)) {
-          if (confirm('There is already content for this language. Do you want to overwrite current content for "' + fileName + '"?')) {
+          let data: DataObject = {
+            header: 'Duplicated language',
+            message: 'There is already content for this language. Do you want to overwrite current content for "' + fileName + '"?',
+            buttons: [
+              {text: 'Yes', role: 'ok'},
+              {text: 'No', role: 'cancel'}
+            ]
+          };
+          const d = this.dialog.open(AlertComponent, {data});
+          const r = await d.afterClosed().toPromise();
+
+          if (r.role === 'ok') {
             this.loadLanguage({
               fileName: fileName + '.' + fileExtension,
               languageCode: fileName,
@@ -67,7 +78,12 @@ export class AppComponent implements OnInit {
               leaveCount: this.ot.countNonEmptyLeaves(c)
             });
           } else {
-            alert('Your file was NOT loaded');
+            data = {
+              header: fileName,
+              message: 'Your file was NOT loaded',
+              buttons: [{role: 'ok', text: 'Ok'}]
+            };
+            this.dialog.open(AlertComponent, {data});
           }
         } else {
           this.loadLanguage({

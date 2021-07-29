@@ -1,5 +1,5 @@
 <div fxLayout="column" fxFill>
-  <mat-toolbar color="primary" fxLayout="row" fxLayoutAlign="space-between center">
+  <mat-toolbar color="primary"  fxFlex="0 0 10%" fxLayout="row" fxLayoutAlign="space-between center">
     <span>ngx-translate editor</span>
     <div>
       <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon"
@@ -9,11 +9,11 @@
     </div>
   </mat-toolbar>
 
-  <div fxLayout="row" style="height: 100%; width: 100%">
+  <div fxLayout="row" style="height: 90%; width: 100%">
 
     <!-- Left half -->
-    <div fxLayout="column" fxFlex="30%">
-      <div fxFlex="100%">
+    <div fxLayout="column" fxFlex="0 0 30%" fxFill>
+      <div fxLayout="column" fxFlex="100%" style="overflow:hidden;">
         <!-- Languages summary -->
         <div style="padding: .3em; background: #D1C4E9"
              *ngIf="translationFiles && translationFiles.length > 0">
@@ -30,7 +30,8 @@
         </div>
 
         <!-- Key tree -->
-        <div style="width: 100%; padding: .3em;overflow: scroll">
+        <!-- <div style="width: 100%; padding: .3em;overflow: scroll"> -->
+        <div fxFill fxFlex="0 0 84%" style="overflow: scroll">
           <app-recursive-json [jsonObject]="keyTree"
                               [showValues]="false"
                               [translationsFiles]="translationFiles"
@@ -39,7 +40,7 @@
       </div>
 
       <!-- File drop zone -->
-      <div ng2FileDrop
+      <div ng2FileDrop fxFlex="0 0 12%"
            [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
            (fileOver)="onFileHooverOnBase($event)"
            (onFileDrop)="onFileDropOnBase($event)"
@@ -50,7 +51,7 @@
     </div>
 
     <!-- Right half -->
-    <div fxLayout="column" fxLayoutAlign="start start" style="width: 100%">
+    <div fxLayout="column" fxLayoutAlign="start start" fxFill>
 
       <!-- Path container -->
       <div id="path-container" fxLayout="row" fxLayoutAlign="space-between center">
@@ -67,7 +68,6 @@
               (click)="onClickOnAddField()">add_circle_outline</span>
 
       </div>
-
 
       <!-- Edit fields -->
       <div style="width: 100%; height: 100%; overflow: scroll; background: #BDBDBD">

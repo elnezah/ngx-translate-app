@@ -1,6 +1,13 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
+export interface DataObject {
+  header?: string;
+  message?: string;
+  buttons?: { text?: string; role: string; }[];
+  inputs?: { id: string, tag?: string, placeholder?: string, value?: string }[];
+}
+
 @Component({
   selector: 'app-alert',
   templateUrl: './alert.component.html',
@@ -11,10 +18,10 @@ export class AlertComponent implements OnInit {
 
   public header: string;
   public message: string;
-  public buttons: { text: string; role: string }[];
-  public inputs: { id: string; tag: string; placeholder: string; value: string }[];
+  public buttons: { text?: string; role: string }[];
+  public inputs: { id: string; tag?: string; placeholder?: string; value?: string }[];
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any,
+  constructor(@Inject(MAT_DIALOG_DATA) public data: DataObject,
               private dialogRef: MatDialogRef<AlertComponent>) {
   }
 
