@@ -47,7 +47,7 @@ export class HomeComponent implements OnInit {
   @HostListener("window:beforeunload", ["$event"])
   unloadNotification($event: any) {
     if (this.hasUnsavedChanges) {
-      $event.returnValue = false;
+      $event.returnValue = !this.hasUnsavedChanges;
     }
   }
 
