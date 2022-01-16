@@ -1,3 +1,4 @@
+import { PreventLooseChangesGuard } from './guards/prevent-loose-changes.guard';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
@@ -13,10 +14,21 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
+import { RouterModule, Routes } from '@angular/router';
+import { HomeComponent } from './pages/home/home.component';
+import { TestComponent } from './pages/test/test.component';
+
+const routes: Routes = [
+  { path: 'home', component: HomeComponent, canDeactivate: [PreventLooseChangesGuard] },
+  { path: 'test', component: TestComponent },
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
+];
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HomeComponent,
+    TestComponent
   ],
   imports: [
     BrowserModule,
@@ -31,7 +43,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatIconModule,
     MatInputModule,
     MatToolbarModule,
-    FormsModule
+    FormsModule,
+    RouterModule.forRoot(routes)
   ],
   providers: [FileReader],
   bootstrap: [AppComponent]

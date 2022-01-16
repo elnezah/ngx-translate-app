@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { TranslationFile } from 'src/app/pages/home/home.component';
 import { ObjectToolboxService } from '../../services/object-toolbox.service';
-import { TranslationFile } from '../../app.component';
 
 @Component({
   selector: 'app-recursive-json',
