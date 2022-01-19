@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
+import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
 import { RouterModule, Routes } from '@angular/router';
@@ -43,6 +44,7 @@ const routes: Routes = [
     MatIconModule,
     MatInputModule,
     MatToolbarModule,
+    MatSlideToggleModule,
     FormsModule,
     RouterModule.forRoot(routes)
   ],

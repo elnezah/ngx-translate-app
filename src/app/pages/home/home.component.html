@@ -1,9 +1,9 @@
 <div fxLayout="column" fxFill>
-  <mat-toolbar color="primary"  fxFlex="0 0 10%" fxLayout="row" fxLayoutAlign="space-between center">
+  <mat-toolbar color="primary" fxFlex="0 0 10%" fxLayout="row" fxLayoutAlign="space-between center">
     <span>ngx-translate editor</span>
     <div>
       <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon"
-              (click)="onClickOnSave()">
+        (click)="onClickOnSave()">
         <mat-icon>save</mat-icon>
       </button>
     </div>
@@ -15,37 +15,36 @@
     <div fxLayout="column" fxFlex="0 0 30%" fxFill>
       <div fxLayout="column" fxFlex="100%" style="overflow:hidden;">
         <!-- Languages summary -->
-        <div style="padding: .3em; background: #D1C4E9"
-             *ngIf="translationFiles && translationFiles.length > 0">
+        <div style="padding: .3em; background: #D1C4E9" *ngIf="translationFiles && translationFiles.length > 0">
           <div style="font-weight: 600">
             Loaded languages
           </div>
-          <div *ngFor="let tf of translationFiles" style="margin-left: 1em"
-               fxLayout="row" fxLayoutAlign="start center"
-               [ngStyle]="{'color': tf.leaveCount < this.totalLeaves ? 'red' : 'unset'}">
+          <div *ngFor="let tf of translationFiles" style="margin-left: 1em" fxLayout="row" fxLayoutAlign="start center"
+            [ngStyle]="{'color': tf.leaveCount < this.totalLeaves ? 'red' : 'unset'}">
             <img class="language-flag" style="margin-right: 1em"
-                 [src]="'assets/img/flag-icons/' + languageCode2FlagFilename(tf.languageCode)">
+              [src]="'assets/img/flag-icons/' + languageCode2FlagFilename(tf.languageCode)">
             {{tf.languageCode}}:&nbsp;{{tf.leaveCount}}/{{this.totalLeaves}}
           </div>
+
+
+          <!-- Show only complete toggle-->
+          <mat-slide-toggle class="" [checked]="showOnlyIncomplete" (change)="onShowIncompleteChange($event)">
+            Show only incomplete
+          </mat-slide-toggle>
         </div>
 
         <!-- Key tree -->
         <!-- <div style="width: 100%; padding: .3em;overflow: scroll"> -->
         <div fxFill fxFlex="0 0 84%" style="overflow: scroll">
-          <app-recursive-json [jsonObject]="keyTree"
-                              [showValues]="false"
-                              [translationsFiles]="translationFiles"
-                              (clickOnElement)="onClickOnTreeElement($event)"></app-recursive-json>
+          <app-recursive-json [jsonObject]="keyTree" [showValues]="false" [showOnlyIncomplete]="showOnlyIncomplete"
+            [translationsFiles]="translationFiles" (clickOnElement)="onClickOnTreeElement($event)"></app-recursive-json>
         </div>
       </div>
 
       <!-- File drop zone -->
-      <div ng2FileDrop fxFlex="0 0 12%"
-           [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
-           (fileOver)="onFileHooverOnBase($event)"
-           (onFileDrop)="onFileDropOnBase($event)"
-           [uploader]="fileUploader"
-           class="well my-drop-zone">
+      <div ng2FileDrop fxFlex="0 0 12%" [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
+        (fileOver)="onFileHooverOnBase($event)" (onFileDrop)="onFileDropOnBase($event)" [uploader]="fileUploader"
+        class="well my-drop-zone">
         Drop here your files
       </div>
     </div>
@@ -63,31 +62,26 @@
           </span>
         </div>
 
-        <span class="material-icons"
-              *ngIf="pathOnEdit"
-              (click)="onClickOnAddField()">add_circle_outline</span>
+        <span class="material-icons" *ngIf="pathOnEdit" (click)="onClickOnAddField()">add_circle_outline</span>
 
       </div>
 
       <!-- Edit fields -->
       <div style="width: 100%; height: 100%; overflow: scroll; background: #BDBDBD">
         <form class="example-form" *ngIf="pathOnEdit">
-          <div fxLayout="column" fxLayoutAlign="space-around stretch" style="height: 100%"
-               *ngIf="isLeafSelected">
+          <div fxLayout="column" fxLayoutAlign="space-around stretch" style="height: 100%" *ngIf="isLeafSelected">
             <mat-card *ngFor="let translationFile of translationFiles; let i=index;">
               <div fxLayout="row" fxLayoutAlign="start center">
                 <img class="language-flag"
-                     [src]="'assets/img/flag-icons/' + languageCode2FlagFilename(translationFile.languageCode)">
-                <div class="language-card-title"
-                     [ngClass]="{'mat-error': !getValueOnEdit(translationFile)}">
+                  [src]="'assets/img/flag-icons/' + languageCode2FlagFilename(translationFile.languageCode)">
+                <div class="language-card-title" [ngClass]="{'mat-error': !getValueOnEdit(translationFile)}">
                   Language code: {{translationFile.languageCode}}
                 </div>
               </div>
               <mat-card-content>
                 <mat-form-field class="example-full-width" style="height: 100%; width: 100%"
-                                (input)="onFieldChange($event, translationFile)">
-            <textarea matInput matTextareaAutosize matAutosizeMinRows=2
-                      [value]="getValueOnEdit(translationFile)">
+                  (input)="onFieldChange($event, translationFile)">
+                  <textarea matInput matTextareaAutosize matAutosizeMinRows=2 [value]="getValueOnEdit(translationFile)">
         </textarea>
                 </mat-form-field>
               </mat-card-content>

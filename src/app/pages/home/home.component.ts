@@ -7,6 +7,7 @@ import {
   AlertComponent,
   DataObject,
 } from "../../components/dialog/alert/alert.component";
+import { MatSlideToggleChange } from "@angular/material/slide-toggle";
 
 export interface TranslationFile {
   fileName: string;
@@ -32,6 +33,7 @@ export class HomeComponent implements OnInit {
   public isLeafSelected: boolean;
   public totalLeaves: number;
   public hasUnsavedChanges = false;
+  public showOnlyIncomplete = false;
 
   constructor(
     private dialog: MatDialog,
@@ -209,6 +211,10 @@ export class HomeComponent implements OnInit {
     }
 
     this.totalLeaves = this.ot.countLeaves(this.keyTree);
+  }
+
+  public onShowIncompleteChange($event: MatSlideToggleChange) {
+    this.showOnlyIncomplete = $event.checked;
   }
 
   // endregion

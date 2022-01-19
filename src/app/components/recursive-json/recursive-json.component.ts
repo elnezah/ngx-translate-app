@@ -14,6 +14,7 @@ export class RecursiveJsonComponent implements OnInit, OnChanges {
   @Input() ownPath: string[] = [];
   @Input() showValues = true;
   @Input() translationsFiles: TranslationFile[];
+  @Input() showOnlyIncomplete = false;
   @Output() clickOnElement = new EventEmitter<string[]>();
 
   public keys: string[];
@@ -49,9 +50,6 @@ export class RecursiveJsonComponent implements OnInit, OnChanges {
   }
 
   public isNodeTranslationComplete(key: string): boolean {
-
-    console.log(RecursiveJsonComponent.TAG, 'isNodeTranslationComplete');
-
     if (this.translationsFiles) {
       for (const tf of this.translationsFiles) {
         const v = this.ot.getValueForObjectPath(tf.content, [...this.ownPath, key]);

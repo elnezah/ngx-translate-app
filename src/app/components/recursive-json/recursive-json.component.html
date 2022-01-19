@@ -1,22 +1,16 @@
-<div *ngFor="let key of keys"
-     [ngStyle]="{'margin-left': 10 * level + 'px'}">
+<div *ngFor="let key of keys" [ngStyle]="{ 'margin-left': 10 * level + 'px' }">
+  <ng-container *ngIf="{isLeaf: isLeaf(jsonObject[key])} as l">
+    <button mat-button (click)="onClickOnElement(key)" class="key-button"
+      [ngClass]="{ 'incomplete-translation': !isNodeTranslationComplete(key) , 'hide-complete': showOnlyIncomplete, 'leaf-button': l.isLeaf }">
+      {{ key }}
+    </button>
 
-  <div (click)="onClickOnElement(key)"
-       [ngStyle]="{'color': isNodeTranslationComplete(key) ? 'black' : 'red'}">
-    {{key}}
-  </div>
+    <div *ngIf="l.isLeaf && showValues" class="leaf" (click)="onClickOnElement(key)">
+      {{ jsonObject[key] }}
+    </div>
 
-  <div *ngIf="isLeaf(jsonObject[key]) && showValues"
-       class="leaf"
-       (click)="onClickOnElement(key)">
-    {{jsonObject[key]}}
-  </div>
-
-  <app-recursive-json *ngIf="!isLeaf(jsonObject[key])"
-                      [showValues]="showValues"
-                      [jsonObject]="jsonObject[key]"
-                      [ownPath]="pathForChild(key)"
-                      [translationsFiles]="translationsFiles"
-                      (clickOnElement)="onClickOnChild($event)"></app-recursive-json>
-
+    <app-recursive-json *ngIf="!l.isLeaf" [showValues]="showValues" [jsonObject]="jsonObject[key]"
+      [showOnlyIncomplete]="showOnlyIncomplete" [ownPath]="pathForChild(key)" [translationsFiles]="translationsFiles"
+      (clickOnElement)="onClickOnChild($event)"></app-recursive-json>
+  </ng-container>
 </div>

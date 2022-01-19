@@ -1,4 +1,24 @@
 .leaf {
   margin-left: 7px;
   color: darkgreen;
+  font-weight: 400;
+}
+
+.leaf-button {
+  font-weight: 400;
+}
+
+.incomplete-translation {
+  color: red;
+  display: block !important;
+}
+
+.hide-complete {
+  display: none;
+}
+
+.key-button {
+  line-height: 24px;
+  width: 100%;
+  text-align: left;
 }
