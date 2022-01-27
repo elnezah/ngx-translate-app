@@ -36,8 +36,12 @@
         <!-- Key tree -->
         <!-- <div style="width: 100%; padding: .3em;overflow: scroll"> -->
         <div fxFill fxFlex="0 0 84%" style="overflow: scroll">
+          <app-objects-tree-merger [objectTree]="objectTree" [selectedPath]="pathOnEdit" (clickOnElement)="onClickOnBranch($event)">
+          </app-objects-tree-merger>
+          <!--
           <app-recursive-json [jsonObject]="keyTree" [showValues]="false" [showOnlyIncomplete]="showOnlyIncomplete"
             [translationsFiles]="translationFiles" (clickOnElement)="onClickOnTreeElement($event)"></app-recursive-json>
+          -->
         </div>
       </div>
 

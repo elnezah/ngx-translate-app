@@ -1,0 +1,6 @@
+<div>
+  <div *ngFor="let b of objectTree" [ngStyle]="{'padding-left': (b.path.length-1) + 'em'}" (click)="onClickOnElement(b)"
+  [ngClass]="{'selected': isSelectedBranch(b)}">
+    {{b.path[(b.path.length-1)]}}
+  </div>
+</div>

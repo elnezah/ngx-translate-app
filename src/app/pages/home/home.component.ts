@@ -8,6 +8,10 @@ import {
   DataObject,
 } from "../../components/dialog/alert/alert.component";
 import { MatSlideToggleChange } from "@angular/material/slide-toggle";
+import {
+  TranslationObject,
+  ObjectBranch,
+} from "src/app/components/objects-tree-merger/objects-tree-merger.component";
 
 export interface TranslationFile {
   fileName: string;
@@ -34,6 +38,10 @@ export class HomeComponent implements OnInit {
   public totalLeaves: number;
   public hasUnsavedChanges = false;
   public showOnlyIncomplete = false;
+
+  public translationObjects: TranslationObject[];
+  public objectTree: ObjectBranch[];
+  public selectedPath: string[];
 
   constructor(
     private dialog: MatDialog,
@@ -74,6 +82,7 @@ export class HomeComponent implements OnInit {
         const content = await this.readFileAsText(fi._file);
         const c = JSON.parse(content);
         if (
+          // If language exists, ask user before overwriting
           this.translationFiles &&
           this.translationFiles.some((t) => t.languageCode === fileName)
         ) {
@@ -116,6 +125,10 @@ export class HomeComponent implements OnInit {
         }
       }
 
+      this.translationObjects = this.translationFiles.map((tf) => ({
+        filename: tf.fileName,
+        content: tf.content,
+      }));
       this.totalLeaves = this.ot.countLeaves(this.keyTree);
     }
   }
@@ -217,6 +230,10 @@ export class HomeComponent implements OnInit {
     this.showOnlyIncomplete = $event.checked;
   }
 
+  public onClickOnBranch(b: ObjectBranch): void {
+    this.pathOnEdit = [...b.path];
+  }
+
   // endregion
 
   private readFileAsText(file: File): Promise<string> {
@@ -241,7 +258,8 @@ export class HomeComponent implements OnInit {
       this.keyTree = {};
     }
     for (const tf of this.translationFiles) {
-      this.ot.mergeStructureIntoTarget(tf.content, this.keyTree);
+      // this.ot.mergeStructureIntoTarget(tf.content, this.keyTree);
+      this.refreshEntriesTree();
     }
   }
 
@@ -254,5 +272,75 @@ export class HomeComponent implements OnInit {
 
   public languageCode2FlagFilename(code: string): string {
     return code.toUpperCase() + ".png";
+  }
+
+  private refreshEntriesTree(): void {
+    if (!this.objectTree) this.objectTree = [];
+
+    for (const tf of this.translationFiles) {
+      this.addLanguageEntries(tf.languageCode, tf.content, []);
+    }
+  }
+
+  /**
+   * Adds the content of a given object to this.objectTree in the corresponding language. If some entry of the given object and language already exists, overwrites it.
+   * @param language the language to which the entries should be assigned
+   * @param content the contents to be added
+   * @param currentPath the base path on which to start in this.objectTree. This is not supposed to be used, this parameter is there because the function is recursive. Default is []
+   */
+  private addLanguageEntries(
+    language: string,
+    content: Object,
+    currentPath: string[] = []
+  ): void {
+    const keys = Object.keys(content);
+
+    for (const k of keys) {
+      const childPath = [...currentPath, k];
+      const isLeaf = typeof content[k] === "string";
+      const branch = this.getBranchForPath(childPath);
+
+      if (isLeaf) {
+        if (!branch.translations) branch.translations = [];
+        const translation = branch.translations.find(
+          (t) => t.language === language
+        );
+        if (!translation) {
+          branch.translations.push({
+            language: language,
+            value: content[k],
+          });
+        } else {
+          translation.value = content[k];
+        }
+      } else {
+        this.addLanguageEntries(language, content[k], childPath);
+      }
+    }
+  }
+
+  /**
+   * Finds the element in the objectTree that corresponds the given path. If it does not exist, creates it (with property 'translations' set to null) and adds it to the array
+   * @param p
+   * @returns
+   */
+  private getBranchForPath(p: string[]): ObjectBranch {
+    // Find the branch in the objectTree for which every element in the path is the same as the given path
+    let branch = this.objectTree.find((b) => {
+      return p.every((e, i) => {
+        return e === b.path[i];
+      });
+    });
+
+    // If branch does not exist, create it
+    if (!branch) {
+      branch = {
+        path: [...p],
+        translations: null,
+      } as ObjectBranch;
+      this.objectTree.push(branch);
+    }
+
+    return branch;
   }
 }

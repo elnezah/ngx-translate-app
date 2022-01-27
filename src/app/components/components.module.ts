@@ -7,11 +7,13 @@ import { FlexModule } from '@angular/flex-layout';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { ObjectsTreeMergerComponent } from './objects-tree-merger/objects-tree-merger.component';
 
 @NgModule({
     declarations: [
       RecursiveJsonComponent,
-      AlertComponent
+      AlertComponent,
+      ObjectsTreeMergerComponent
     ],
   imports: [
     CommonModule,
@@ -22,7 +24,8 @@ import { MatInputModule } from '@angular/material/input';
     MatInputModule
   ],
     exports: [
-      RecursiveJsonComponent
+      RecursiveJsonComponent,
+      ObjectsTreeMergerComponent
     ]
   }
 )
