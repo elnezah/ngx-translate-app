@@ -32,7 +32,6 @@ export class HomeComponent implements OnInit {
   public fileUploader = new FileUploader({});
   public translationFiles: TranslationFile[] = [];
   public clickedFile: TranslationFile;
-  public pathOnEdit: string[];
   public keyTree: any;
   public isLeafSelected: boolean;
   public totalLeaves: number;
@@ -42,6 +41,7 @@ export class HomeComponent implements OnInit {
   public translationObjects: TranslationObject[];
   public objectTree: ObjectBranch[];
   public selectedPath: string[];
+  public branchOnEdit: ObjectBranch;
 
   constructor(
     private dialog: MatDialog,
@@ -140,23 +140,56 @@ export class HomeComponent implements OnInit {
   public onClickOnTreeElement($event: string[]): void {
     const target = this.ot.getValueForObjectPath(this.keyTree, $event);
     this.isLeafSelected = this.ot.isLeaf(target);
-    this.pathOnEdit = $event;
+    // this.pathOnEdit = $event;
   }
 
-  public onFieldChange($event: Event, translationFile: TranslationFile): void {
+  public onFieldChange(
+    $event: Event,
+    b: { language: string; value: string }
+  ): void {
     this.hasUnsavedChanges = true;
+    b.value = $event.target["value"];
 
+    /*
     this.ot.setValueForObjectPath(
       ($event.target as HTMLInputElement).value,
       translationFile.content,
-      this.pathOnEdit
+      this.branchOnEdit.path
     );
     translationFile.leaveCount = this.ot.countNonEmptyLeaves(
       translationFile.content
     );
+    */
   }
 
   public onClickOnSave(): void {
+    if (!this.objectTree) return;
+    const languages = this.objectTree.reduce<string[]>((a, b) => {
+      if (b.translations)
+        for (const t of b.translations) {
+          if (!a.includes(t.language)) a.push(t.language);
+        }
+
+      return a;
+    }, []);
+
+    if (languages && languages.length > 0) {
+      for (const l of languages) {
+        const translationJson = {} as Object;
+        for (const e of this.objectTree) {
+          this.ot.setValueForObjectPath(e.translations ? e.translations.find(t => t.language === l)?.value : {} as Object, translationJson, e.path);
+        }
+
+        const blob = JSON.stringify(translationJson, null, 3);
+        this.fileSaver.saveText(blob, l + '.json');
+
+        console.log(HomeComponent.TAG, {l, translationJson});
+      }
+
+      this.hasUnsavedChanges = false;
+    }
+
+    /*
     if (this.translationFiles) {
       for (const tf of this.translationFiles) {
         const blob = JSON.stringify(tf.content, null, 3);
@@ -165,6 +198,7 @@ export class HomeComponent implements OnInit {
 
       this.hasUnsavedChanges = false;
     }
+    */
   }
 
   public async onClickOnAddField(): Promise<void> {
@@ -201,7 +235,7 @@ export class HomeComponent implements OnInit {
         }
 
         // Create a new son or sibling in this.keyTree
-        const path = [...this.pathOnEdit];
+        const path = [...this.branchOnEdit.path];
         let target = this.ot.getValueForObjectPath(this.keyTree, path);
         if (this.ot.isLeaf(target)) {
           path.pop();
@@ -231,7 +265,7 @@ export class HomeComponent implements OnInit {
   }
 
   public onClickOnBranch(b: ObjectBranch): void {
-    this.pathOnEdit = [...b.path];
+    this.branchOnEdit = b;
   }
 
   // endregion
@@ -266,7 +300,7 @@ export class HomeComponent implements OnInit {
   public getValueOnEdit(translationFile: TranslationFile): string {
     return this.ot.getValueForObjectPath(
       translationFile.content,
-      this.pathOnEdit
+      this.branchOnEdit.path
     );
   }
 

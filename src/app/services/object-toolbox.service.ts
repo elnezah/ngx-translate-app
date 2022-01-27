@@ -25,7 +25,7 @@ export class ObjectToolboxService {
     }
   }
 
-  public setValueForObjectPath(value: any, object: any, path: string[]): void {
+  public setValueForObjectPath(value: any, object: Object, path: string[]): void {
     if (!path) {
       return;
     } else if (path.length === 1) {

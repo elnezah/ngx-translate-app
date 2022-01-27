@@ -36,7 +36,8 @@
         <!-- Key tree -->
         <!-- <div style="width: 100%; padding: .3em;overflow: scroll"> -->
         <div fxFill fxFlex="0 0 84%" style="overflow: scroll">
-          <app-objects-tree-merger [objectTree]="objectTree" [selectedPath]="pathOnEdit" (clickOnElement)="onClickOnBranch($event)">
+          <app-objects-tree-merger [objectTree]="objectTree" [selectedPath]="branchOnEdit?.path"
+            (clickOnElement)="onClickOnBranch($event)">
           </app-objects-tree-merger>
           <!--
           <app-recursive-json [jsonObject]="keyTree" [showValues]="false" [showOnlyIncomplete]="showOnlyIncomplete"
@@ -60,20 +61,39 @@
       <div id="path-container" fxLayout="row" fxLayoutAlign="space-between center">
 
         <div fxLayout="row" fxLayoutAlign="start center">
-          <span *ngFor="let e of pathOnEdit; last as isLast">
+          <span *ngFor="let e of branchOnEdit?.path; last as isLast">
             {{e}}
             <span *ngIf="!isLast" style="color: #536DFE">&nbsp;>&nbsp;</span>
           </span>
         </div>
 
-        <span class="material-icons" *ngIf="pathOnEdit" (click)="onClickOnAddField()">add_circle_outline</span>
+        <span class="material-icons" *ngIf="branchOnEdit" (click)="onClickOnAddField()">add_circle_outline</span>
 
       </div>
 
       <!-- Edit fields -->
       <div style="width: 100%; height: 100%; overflow: scroll; background: #BDBDBD">
-        <form class="example-form" *ngIf="pathOnEdit">
-          <div fxLayout="column" fxLayoutAlign="space-around stretch" style="height: 100%" *ngIf="isLeafSelected">
+        <form class="example-form" *ngIf="branchOnEdit">
+          <div fxLayout="column" fxLayoutAlign="space-around stretch" style="height: 100%"
+            *ngIf="branchOnEdit.translations && branchOnEdit.translations.length > 0 ">
+
+            <mat-card *ngFor="let translation of branchOnEdit.translations">
+              <div fxLayout="row" fxLayoutAlign="start center">
+                <img class="language-flag"
+                  [src]="'assets/img/flag-icons/' + languageCode2FlagFilename(translation.language)">
+                <div class="language-card-title" [ngClass]="{'mat-error': !translation.value}">
+                  Language code: {{translation.language}}
+                </div>
+              </div>
+              <mat-card-content>
+                <mat-form-field class="example-full-width" style="height: 100%; width: 100%" (input)="onFieldChange($event, translation)">
+                  <textarea matInput [matTextareaAutosize]="true" [matAutosizeMinRows]="2"
+                    [value]="translation.value"></textarea>
+                </mat-form-field>
+              </mat-card-content>
+            </mat-card>
+
+            <!--
             <mat-card *ngFor="let translationFile of translationFiles; let i=index;">
               <div fxLayout="row" fxLayoutAlign="start center">
                 <img class="language-flag"
@@ -85,11 +105,12 @@
               <mat-card-content>
                 <mat-form-field class="example-full-width" style="height: 100%; width: 100%"
                   (input)="onFieldChange($event, translationFile)">
-                  <textarea matInput matTextareaAutosize matAutosizeMinRows=2 [value]="getValueOnEdit(translationFile)">
-        </textarea>
+                  <textarea matInput matTextareaAutosize matAutosizeMinRows=2
+                    [value]="getValueOnEdit(translationFile)"></textarea>
                 </mat-form-field>
               </mat-card-content>
             </mat-card>
+-->
           </div>
         </form>
       </div>
