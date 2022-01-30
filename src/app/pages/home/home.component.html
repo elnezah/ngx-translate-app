@@ -37,6 +37,7 @@
         <!-- <div style="width: 100%; padding: .3em;overflow: scroll"> -->
         <div fxFill fxFlex="0 0 84%" style="overflow: scroll">
           <app-objects-tree-merger [objectTree]="objectTree" [selectedPath]="branchOnEdit?.path"
+            [hideComplete]="showOnlyIncomplete" [loadedLanguages]="loadedLanguages"
             (clickOnElement)="onClickOnBranch($event)">
           </app-objects-tree-merger>
           <!--
@@ -75,42 +76,25 @@
       <div style="width: 100%; height: 100%; overflow: scroll; background: #BDBDBD">
         <form class="example-form" *ngIf="branchOnEdit">
           <div fxLayout="column" fxLayoutAlign="space-around stretch" style="height: 100%"
-            *ngIf="branchOnEdit.translations && branchOnEdit.translations.length > 0 ">
+            *ngIf="branchOnEdit.translations">
 
-            <mat-card *ngFor="let translation of branchOnEdit.translations">
+            <!--mat-card *ngFor="let language of branchOnEdit.translations"-->
+            <mat-card *ngFor="let tf of translationFiles">
               <div fxLayout="row" fxLayoutAlign="start center">
                 <img class="language-flag"
-                  [src]="'assets/img/flag-icons/' + languageCode2FlagFilename(translation.language)">
-                <div class="language-card-title" [ngClass]="{'mat-error': !translation.value}">
-                  Language code: {{translation.language}}
-                </div>
-              </div>
-              <mat-card-content>
-                <mat-form-field class="example-full-width" style="height: 100%; width: 100%" (input)="onFieldChange($event, translation)">
-                  <textarea matInput [matTextareaAutosize]="true" [matAutosizeMinRows]="2"
-                    [value]="translation.value"></textarea>
-                </mat-form-field>
-              </mat-card-content>
-            </mat-card>
-
-            <!--
-            <mat-card *ngFor="let translationFile of translationFiles; let i=index;">
-              <div fxLayout="row" fxLayoutAlign="start center">
-                <img class="language-flag"
-                  [src]="'assets/img/flag-icons/' + languageCode2FlagFilename(translationFile.languageCode)">
-                <div class="language-card-title" [ngClass]="{'mat-error': !getValueOnEdit(translationFile)}">
-                  Language code: {{translationFile.languageCode}}
+                  [src]="'assets/img/flag-icons/' + languageCode2FlagFilename(tf.languageCode)">
+                <div class="language-card-title" [ngClass]="{'mat-error': !branchOnEdit.translations[tf.languageCode]?.value}">
+                  Language code: {{tf.languageCode}}
                 </div>
               </div>
               <mat-card-content>
                 <mat-form-field class="example-full-width" style="height: 100%; width: 100%"
-                  (input)="onFieldChange($event, translationFile)">
-                  <textarea matInput matTextareaAutosize matAutosizeMinRows=2
-                    [value]="getValueOnEdit(translationFile)"></textarea>
+                  (input)="onFieldChange($event, tf.languageCode)">
+                  <textarea matInput [matTextareaAutosize]="true" [matAutosizeMinRows]="2"
+                    [value]="translationOnEdit(tf.languageCode)"></textarea>
                 </mat-form-field>
               </mat-card-content>
             </mat-card>
--->
           </div>
         </form>
       </div>

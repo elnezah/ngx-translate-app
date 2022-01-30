@@ -1,6 +1,9 @@
-<div>
-  <div *ngFor="let b of objectTree" [ngStyle]="{'padding-left': (b.path.length-1) + 'em'}" (click)="onClickOnElement(b)"
-  [ngClass]="{'selected': isSelectedBranch(b)}">
-    {{b.path[(b.path.length-1)]}}
-  </div>
+<div class="objects-tree-merger-container">
+  <ng-container *ngFor="let b of objectTree">
+    <button mat-button *ngIf="!(isCompleteBranch(b) && hideComplete)" class="branch"
+      [ngStyle]="{'padding-left': (b.path.length-1) + 'em'}"
+      [ngClass]="{'selected': isSelectedBranch(b), 'complete': isCompleteBranch(b)}" (click)="onClickOnElement(b)">
+      {{b.path[(b.path.length-1)]}}
+    </button>
+  </ng-container>
 </div>

@@ -5,7 +5,7 @@ export interface DataObject {
   header?: string;
   message?: string;
   buttons?: { text?: string; role: string; }[];
-  inputs?: { id: string, tag?: string, placeholder?: string, value?: string }[];
+  inputs?: { id: string; tag?: string; placeholder?: string; value?: string }[];
 }
 
 @Component({
@@ -32,14 +32,14 @@ export class AlertComponent implements OnInit {
     this.inputs = this.data.inputs;
   }
 
-  public onClickOnButton(button: { text: string; role: string }): void {
+  public onClickOnButton(button: { text?: string; role: string }): void {
     this.dialogRef.close({
       data: {inputs: this.inputs},
       role: button.role
     });
   }
 
-  public onInputChange($event: Event, input: { id: string; tag: string; placeholder: string; value: string }): void {
+  public onInputChange($event: Event, input: { id: string; tag?: string; placeholder?: string; value?: string; }): void {
     input.value = $event.target[`value`];
   }
 }

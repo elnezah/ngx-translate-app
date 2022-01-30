@@ -1,4 +1,29 @@
+.objects-tree-merger-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.branch {
+   color: #f44336;
+  font-weight: 500;
+  background: #eef;
+  width: 100%;
+  text-align: left;
+}
+
 .selected {
- background: ivory;
- font-weight: 600;
+  background: #dde !important;
+  font-weight: 600 !important;
+}
+
+.complete {
+  color: #888 !important;
+  font-weight: 200;
+  background: #fff;
+}
+
+.complete.hide-complete {
+  visibility: hidden;
 }
