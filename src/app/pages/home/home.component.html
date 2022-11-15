@@ -83,7 +83,8 @@
               <div fxLayout="row" fxLayoutAlign="start center">
                 <img class="language-flag"
                   [src]="'assets/img/flag-icons/' + languageCode2FlagFilename(tf.languageCode)">
-                <div class="language-card-title" [ngClass]="{'mat-error': !branchOnEdit.translations[tf.languageCode]?.value}">
+                <div class="language-card-title"
+                  [ngClass]="{'mat-error': !branchOnEdit.translations[tf.languageCode]?.value}">
                   Language code: {{tf.languageCode}}
                 </div>
               </div>

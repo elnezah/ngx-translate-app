@@ -1,0 +1,11 @@
+<svg viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg">
+  <!-- Some graphical objects to use -->
+  <defs>
+    <circle id="node" cx="0" cy="0" r="4" stroke-width="2" fill="transparent" />
+  </defs>
+
+  <line x1="8" x2="22" y1="8" y2="22" stroke="green" stroke-width="2" />
+
+  <use x="5" y="5" href="#node" stroke="red" />
+  <use x="25" y="25" href="#node" stroke="blue"/>
+</svg>
